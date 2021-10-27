@@ -1,0 +1,194 @@
+.offerwhere {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+@media (min-width: 576px) {
+    .offerwhere {
+        max-width: 540px;
+    }
+}
+
+.offerwhere-card {
+    margin-bottom: 2.5rem;
+    background-color: #006156;
+    padding: 1rem;
+    border-radius: .25rem;
+    display: grid;
+}
+
+.offerwhere-card-link a {
+    text-decoration-style: dotted !important;
+    color: #fff !important;
+}
+
+.offerwhere-card-link a:hover {
+    text-decoration-style: solid !important;
+    color: #fff !important;
+}
+
+.offerwhere-logo {
+    width: 130px;
+}
+
+.offerwhere-text-white {
+    color: #fff !important;
+}
+
+.offerwhere-mt-3 {
+    margin-top: 1rem !important;
+}
+
+.offerwhere-pt-4 {
+    padding-top: 1.5rem !important;
+}
+
+.offerwhere-pb-4 {
+    padding-bottom: 1.5rem !important;
+}
+
+.offerwhere-pr-3 {
+    padding-right: 1rem !important;
+}
+
+.offerwhere-pl-3 {
+    padding-left: 1rem !important;
+}
+
+.offerwhere-pl-5 {
+    padding-left: 3rem !important;
+}
+
+.offerwhere-w-100 {
+    width: 100% !important;
+}
+
+.offerwhere-row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.offerwhere-pt-3 {
+    padding-top: 1rem !important;
+}
+
+.offerwhere-col {
+    position: relative;
+    width: 100%;
+}
+
+.offerwhere-col {
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    max-width: 100%;
+}
+
+.offerwhere-text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.offerwhere-align-items-center {
+    -ms-flex-align: center !important;
+    align-items: center !important;
+}
+
+.offerwhere-justify-content-center {
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
+
+.offerwhere-flex-column {
+    -ms-flex-direction: column !important;
+    flex-direction: column !important;
+}
+
+.offerwhere-d-flex {
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.offerwhere-border-left {
+    border-left: 1px dashed #dee2e6 !important;
+}
+
+.offerwhere-flex-row {
+    -ms-flex-direction: row !important;
+    flex-direction: row !important;
+}
+
+.offerwhere-font-weight-bold {
+    font-weight: bold !important;
+}
+
+.offerwhere-text-uppercase {
+    text-transform: uppercase !important;
+}
+
+.offerwhere-text-small {
+    font-size: .675rem !important;
+}
+
+.offerwhere-form {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: .25rem;
+}
+
+.offerwhere-d-none {
+    display: none;
+}
+
+#offerwhere-icons-with-texts > :not(:last-child) {
+    padding-right: 3rem;
+}
+
+.offerwhere-form form {
+    resize: none !important;
+}
+
+.offerwhere-form-row {
+    padding: 0 !important;
+}
+
+.offerwhere-svg-container {
+    height: 2rem;
+}
+
+.offerwhere-svg-container svg {
+    height: 100%;
+    overflow: visible;
+}
+
+.offerwhere-alert {
+    position: relative;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.offerwhere-alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.offerwhere-alert-danger .offerwhere-alert-link {
+    color: #491217;
+}
+
+.offerwhere-alert-link {
+    font-weight: bold;
+}
+
+.offerwhere-alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
