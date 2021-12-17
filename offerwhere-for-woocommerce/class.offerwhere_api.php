@@ -6,7 +6,8 @@ if (!defined('ABSPATH')) {
 
 class Offerwhere_API
 {
-    const OFFERWHERE_API_BASE_URL = 'https://api.offerhwere.com';
+//    const OFFERWHERE_API_BASE_URL = 'https://api.offerwhere.com';
+    const OFFERWHERE_API_BASE_URL = 'http://192.168.0.66:8080';
 
     public static function offerwhere_get_user_transaction_snapshot(
         $organisation_id,
