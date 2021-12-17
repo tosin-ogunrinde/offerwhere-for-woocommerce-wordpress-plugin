@@ -5,10 +5,10 @@
  * Description:             Run your Points, Rewards, or Loyalty Programs online and in-store in minutes.
  * Version:                 1.0.0
  * Requires at least:       3.1
- * Tested up to:            5.8.1
+ * Tested up to:            5.8.2
  * Requires PHP:            7.0
  * WC requires at least:    3.5
- * WC tested up to:         5.8
+ * WC tested up to:         6.0
  * Author:                  Offerwhere
  * Author URI:              https://www.offerwhere.com
  * License:                 GPLv2 or later
