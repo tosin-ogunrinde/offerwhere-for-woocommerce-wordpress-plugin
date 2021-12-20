@@ -4,7 +4,7 @@ Author URI: https://www.offerwhere.com
 Tags: loyalty program, reward program, points program, woocommerce, loyalty, reward, points, attract customers, retain customers
 Requires at least: 3.1
 Tested up to: 5.8.2
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.0
 WC requires at least: 3.5
 WC tested up to: 6.0
