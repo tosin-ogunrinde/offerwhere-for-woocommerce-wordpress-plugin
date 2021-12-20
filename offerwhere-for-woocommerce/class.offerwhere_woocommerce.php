@@ -8,6 +8,8 @@ class Offerwhere_WooCommerce
 {
     const OFFERWHERE_WOOCOMMERCE_CLASS = 'Offerwhere_WooCommerce';
     const OFFERWHERE_USER_NUMBER = 'offerwhere_user_number';
+    const OFFERWHERE_ACTIVATION_CODE = 'offerwhere_activation_code';
+    const OFFERWHERE_ACTIVATION_CODE_USER_NUMBER = 'offerwhere_activation_code_user_number';
     const OFFERWHERE_USER_POINTS = 'offerwhere_user_points';
     const OFFERWHERE_USER_DISCOUNT_APPLIED = 'offerwhere_user_discount_applied';
     const OFFERWHERE_USER_ID = 'offerwhere_user_id';
@@ -157,8 +159,15 @@ class Offerwhere_WooCommerce
                                     </div>
                                     <div id="offerwhere_loyalty_program_current_balance"
                                          class="offerwhere-text-truncate">
-                                        <?php esc_html(printf('%s', array_key_exists(self::OFFERWHERE_USER_POINTS, $_SESSION) ?
-                                            $_SESSION[self::OFFERWHERE_USER_POINTS] : 0)) ?>
+                                        <?php esc_html(printf(
+                                            '%s',
+                                            $user_number !== null &&
+                                            array_key_exists(
+                                                self::OFFERWHERE_USER_POINTS,
+                                                $_SESSION
+                                            ) ?
+                                                $_SESSION[self::OFFERWHERE_USER_POINTS] : 0
+                                        )) ?>
                                     </div>
                                 </div>
                                 <?php
@@ -222,8 +231,9 @@ class Offerwhere_WooCommerce
                             }
                         }
                         if ($show_edit_pin_form) {
-                            self::offerwhere_toggle_form_ask_for_user_number($user_number);
-                            self::offerwhere_ask_user_for_number($user_number);
+                            self::offerwhere_toggle_form_ask_for_user_number();
+                            self::offerwhere_ask_user_for_number();
+                            self::offerwhere_ask_user_for_activation_code();
                         }
                         ?>
                     </div>
@@ -245,18 +255,21 @@ class Offerwhere_WooCommerce
         }
     }
 
-    private static function offerwhere_get_user_transaction_snapshot($user_number, $manual_entry)
+    private static function offerwhere_change_user_number($user_number)
     {
         if (Offerwhere_Settings::offerwhere_is_setting_missing()) {
             return;
         }
         if (!Offerwhere_Validator::offerwhere_is_valid_user_number($user_number)) {
-            ?>
-            <div class="offerwhere-alert offerwhere-alert-danger">Enter a valid Offerwhere PIN.</div>
-            <?php
+            Offerwhere_Message::offerwhere_render_invalid_user_number_error_message();
             return;
         }
-        $response = Offerwhere_API::offerwhere_get_user_transaction_snapshot(
+        if (array_key_exists(self::OFFERWHERE_USER_NUMBER, $_SESSION) &&
+            strcasecmp($_SESSION[self::OFFERWHERE_USER_NUMBER], $user_number) === 0) {
+            Offerwhere_Message::offerwhere_render_user_number_changed_successful_message();
+            return;
+        }
+        $response = Offerwhere_API::offerwhere_post_user_number_confirmation_requests(
             Offerwhere_Settings::offerwhere_get_organisation_id(),
             Offerwhere_Settings::offerwhere_get_loyalty_program_id(),
             $user_number,
@@ -264,45 +277,40 @@ class Offerwhere_WooCommerce
         );
         if (is_array($response) && !is_wp_error($response)) {
             $response_code = wp_remote_retrieve_response_code($response);
-            if ($response_code === 200) {
-                $response_body = wp_remote_retrieve_body($response);
-                $result = json_decode($response_body, true);
-                $_SESSION[self::OFFERWHERE_USER_ID] = $result['user']['id'];
-                $_SESSION[self::OFFERWHERE_USER_NUMBER] = $user_number;
-                $current_user_id = get_current_user_id();
-                if ($current_user_id > 0) {
-                    Offerwhere_Database::offerwhere_insert_user($current_user_id, $user_number);
-                }
-                if ($manual_entry) {
-                    esc_html(printf(
-                        '<div class="offerwhere-alert offerwhere-alert-success">
-Your PIN <span class="offerwhere-text-uppercase">%s</span> has been applied.</div>',
-                        $user_number
-                    ));
-                }
-                self::offerwhere_update_user_points($result['points']);
-            } elseif ($response_code === 404) {
-                ?>
-                <div class="offerwhere-alert offerwhere-alert-danger">Your PIN cannot be found. <a
-                            class="offerwhere-alert-link" href="https://www.offerwhere.com/sign-up"
-                            rel="noopener" target="_blank">
-                        Sign up</a> to get yours now.
-                </div>
-                <?php
-            } elseif ($response_code >= 400 && $response_code <= 499) {
-                ?>
-                <div class="offerwhere-alert offerwhere-alert-danger">An error occurred while processing your
-                    request. Contact the webmaster or web administrator.
-                </div>
-                <?php
+            if ($response_code === Offerwhere_HTTP_Status::NO_CONTENT) {
+                $_SESSION[self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER] = $user_number;
             } else {
-                ?>
-                <div class="offerwhere-alert offerwhere-alert-danger">An error occurred while processing your
-                    request. Try again.
-                </div>
-                <?php
+                self::offerwhere_clear_session(array(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER));
+                if ($response_code === Offerwhere_HTTP_Status::NOT_FOUND) {
+                    Offerwhere_Message::offerwhere_render_unknown_user_number_error_message();
+                } elseif ($response_code === Offerwhere_HTTP_Status::CONFLICT) {
+                    Offerwhere_Message::offerwhere_render_user_disabled_error_message();
+                } elseif ($response_code === Offerwhere_HTTP_Status::PRECONDITION_FAILED) {
+                    Offerwhere_Message::offerwhere_render_unregistered_user_number_error_message();
+                } else {
+                    Offerwhere_Message::offerwhere_render_internal_server_error_message();
+                }
             }
         }
+    }
+
+    private static function offerwhere_get_user_transaction_snapshot($user_number, $manual_entry)
+    {
+        if (Offerwhere_Settings::offerwhere_is_setting_missing()) {
+            return;
+        }
+        if (!Offerwhere_Validator::offerwhere_is_valid_user_number($user_number)) {
+            Offerwhere_Message::offerwhere_render_invalid_user_number_error_message();
+            return;
+        }
+        $response = Offerwhere_API::offerwhere_get_user_transaction_snapshot(
+            Offerwhere_Settings::offerwhere_get_organisation_id(),
+            Offerwhere_Settings::offerwhere_get_loyalty_program_id(),
+            $user_number,
+            null,
+            Offerwhere_Settings::offerwhere_get_api_key()
+        );
+        self::offerwhere_parse_get_user_transaction_snapshot_response($response, $user_number, $manual_entry, false);
     }
 
     private static function offerwhere_update_user_points($balance)
@@ -335,27 +343,139 @@ Your PIN <span class="offerwhere-text-uppercase">%s</span> has been applied.</di
         do_action(self::OFFERWHERE_USER_LOYALTY_POINTS_BALANCE, $current_balance);
     }
 
-    private static function offerwhere_toggle_form_ask_for_user_number($user_number)
+    private static function offerwhere_toggle_form_ask_for_user_number()
     {
         ?>
         <div class="offerwhere-card-link">
             <a href="#" id="offerwhere-form-ask-user-for-number-toggle-button">
-                <?php esc_html(printf('%s', $user_number !== null ? 'Change Offerwhere PIN' :
-                    'Collect points? Apply Offerwhere PIN')); ?>
+                Collect points? Apply Offerwhere PIN
             </a>
         </div>
         <?php
     }
 
-    private static function offerwhere_ask_user_for_number($user_number)
+    private static function offerwhere_ask_user_for_activation_code()
     {
-        $button_name = 'offerwhere_btn_submit_user_number';
+        $button_submit_activation_code = 'offerwhere_btn_submit_activation_code';
         ?>
-        <div class="offerwhere-form offerwhere-mt-3" id="offerwhere-form-ask-user-for-number" style="display: none">
+        <div class="offerwhere-form offerwhere-mt-3" id="offerwhere-form-activation-code-container"
+             style=<?php echo array_key_exists(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER, $_SESSION) ?
+                'display:block' : 'display:none' ?>>
             <?php
-            if (array_key_exists($button_name, $_POST) &&
+            if (array_key_exists($button_submit_activation_code, $_POST) &&
+                array_key_exists(self::OFFERWHERE_ACTIVATION_CODE, $_POST) &&
+            array_key_exists(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER, $_SESSION)) {
+                self::offerwhere_apply_activation_code(
+                    $_POST[self::OFFERWHERE_ACTIVATION_CODE],
+                    $_SESSION[self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER]
+                );
+            }
+            ?>
+            <form method="post">
+                <div class="offerwhere-pb-4">
+                    We have sent an activation code to your email address. Enter this code below to change your PIN.
+                </div>
+                <?php
+                woocommerce_form_field(self::OFFERWHERE_ACTIVATION_CODE, array(
+                    'type' => 'text',
+                    'required' => true,
+                    'maxlength' => 6,
+                    'autocomplete' => 'off',
+                    'class' => array('offerwhere-form-row'),
+                    'input_class' => array('offerwhere-text-uppercase', 'offerwhere-input-text'),
+                    'label' => 'Activation code',
+                ));
+                ?>
+                <input type="submit" class="button offerwhere-mt-3"
+                       name="<?php echo esc_attr($button_submit_activation_code) ?>"
+                       value="Apply activation code"/>
+            </form>
+        </div>
+        <?php
+    }
+
+    private static function offerwhere_apply_activation_code($activation_code, $user_number)
+    {
+        if (Offerwhere_Settings::offerwhere_is_setting_missing()) {
+            return;
+        }
+        if (!Offerwhere_Validator::offerwhere_is_valid_activation_code($activation_code)) {
+            Offerwhere_Message::offerwhere_render_invalid_activation_code_error_message();
+            return;
+        }
+        $response = Offerwhere_API::offerwhere_get_user_transaction_snapshot(
+            Offerwhere_Settings::offerwhere_get_organisation_id(),
+            Offerwhere_Settings::offerwhere_get_loyalty_program_id(),
+            null,
+            $activation_code,
+            Offerwhere_Settings::offerwhere_get_api_key()
+        );
+        self::offerwhere_parse_get_user_transaction_snapshot_response(
+            $response,
+            $user_number,
+            true,
+            true
+        );
+    }
+
+    private static function offerwhere_parse_get_user_transaction_snapshot_response(
+        $response,
+        $user_number,
+        $manual_entry,
+        $activation_journey
+    ) {
+        if (is_array($response) && !is_wp_error($response)) {
+            $response_code = wp_remote_retrieve_response_code($response);
+            if ($response_code === Offerwhere_HTTP_Status::OK) {
+                $response_body = wp_remote_retrieve_body($response);
+                $result = json_decode($response_body, true);
+                if ($result['user']['dummy']) {
+                    Offerwhere_Message::offerwhere_render_unregistered_user_number_error_message();
+                } elseif (!$result['user']['enabled']) {
+                    Offerwhere_Message::offerwhere_render_user_disabled_error_message();
+                } else {
+                    $_SESSION[self::OFFERWHERE_USER_ID] = $result['user']['id'];
+                    $_SESSION[self::OFFERWHERE_USER_NUMBER] = $user_number;
+                    $current_user_id = get_current_user_id();
+                    if ($current_user_id > 0) {
+                        Offerwhere_Database::offerwhere_insert_user($current_user_id, $user_number);
+                    }
+                    if ($manual_entry && !$activation_journey) {
+                        Offerwhere_Message::offerwhere_render_user_number_changed_successful_message();
+                    }
+                    self::offerwhere_update_user_points($result['points']);
+                    self::offerwhere_clear_session(array(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER));
+                    ?>
+                    <script type="application/javascript">
+                        const activationCodeFormContainer = document
+                            .getElementById('offerwhere-form-activation-code-container');
+                        if (activationCodeFormContainer) {
+                            activationCodeFormContainer.style.display = 'none';
+                        }
+                    </script>
+                    <?php
+                }
+            } elseif ($response_code === Offerwhere_HTTP_Status::NOT_FOUND) {
+                if ($activation_journey) {
+                    Offerwhere_Message::offerwhere_render_unknown_activation_code_error_message();
+                } else {
+                    Offerwhere_Message::offerwhere_render_unknown_user_number_error_message();
+                }
+            } else {
+                Offerwhere_Message::offerwhere_render_internal_server_error_message();
+            }
+        }
+    }
+
+    private static function offerwhere_ask_user_for_number()
+    {
+        $button_submit_user_number = 'offerwhere_btn_submit_user_number';
+        ?>
+        <div class="offerwhere-form offerwhere-mt-3" id="offerwhere-form-user-number-container" style="display: none">
+            <?php
+            if (array_key_exists($button_submit_user_number, $_POST) &&
                 array_key_exists(self::OFFERWHERE_USER_NUMBER, $_POST)) {
-                self::offerwhere_get_user_transaction_snapshot($_POST[self::OFFERWHERE_USER_NUMBER], true);
+                self::offerwhere_change_user_number($_POST[self::OFFERWHERE_USER_NUMBER]);
             }
             ?>
             <form method="post">
@@ -363,20 +483,22 @@ Your PIN <span class="offerwhere-text-uppercase">%s</span> has been applied.</di
                     An <a href="https://www.offerwhere.com" rel="noopener" target="_blank">Offerwhere PIN</a> is
                     required to collect the points. Enter your PIN below. If you don't have
                     one, <a href="https://www.offerwhere.com/sign-up" rel="noopener"
-                                              target="_blank">sign up</a> to get yours now.
+                            target="_blank">sign up</a> to get yours now.
                 </div>
                 <?php
                 woocommerce_form_field(self::OFFERWHERE_USER_NUMBER, array(
                     'type' => 'text',
                     'required' => true,
                     'maxlength' => 8,
+                    'autocomplete' => 'off',
                     'class' => array('offerwhere-form-row'),
+                    'input_class' => array('offerwhere-text-uppercase', 'offerwhere-input-text'),
                     'label' => 'Offerwhere PIN',
                 ));
                 ?>
-                <input type="submit" class="button offerwhere-mt-3" name="<?php echo esc_attr($button_name) ?>"
-                       value="<?php esc_html(printf('%s', $user_number !== null ? 'Change Offerwhere PIN' :
-                           'Apply Offerwhere PIN')) ?>"/>
+                <input type="submit" class="button offerwhere-mt-3"
+                       name="<?php echo esc_attr($button_submit_user_number) ?>"
+                       value="Apply Offerwhere PIN"/>
             </form>
         </div>
         <?php
@@ -445,7 +567,7 @@ Your PIN <span class="offerwhere-text-uppercase">%s</span> has been applied.</di
         );
         if (is_array($response) && !is_wp_error($response)) {
             $response_code = wp_remote_retrieve_response_code($response);
-            if ($response_code === 200) {
+            if ($response_code === Offerwhere_HTTP_Status::OK) {
                 $response_body = wp_remote_retrieve_body($response);
                 $result = json_decode($response_body, true);
                 self::offerwhere_update_user_points($result['balance']);
@@ -495,6 +617,6 @@ Your PIN <span class="offerwhere-text-uppercase">%s</span> has been applied.</di
     public static function offerwhere_wp_logout()
     {
         self::offerwhere_clear_session(array(self::OFFERWHERE_USER_DISCOUNT_APPLIED, self::OFFERWHERE_USER_ID,
-            self::OFFERWHERE_USER_NUMBER, self::OFFERWHERE_USER_POINTS));
+            self::OFFERWHERE_USER_NUMBER, self::OFFERWHERE_USER_POINTS, self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER));
     }
 }
