@@ -28,6 +28,8 @@ define('OFFERWHERE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_validator.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_settings.php');
+require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_http_status.php');
+require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_message.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_woocommerce.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_api.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_database.php');

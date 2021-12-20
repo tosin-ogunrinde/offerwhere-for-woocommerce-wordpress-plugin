@@ -5,6 +5,8 @@ jQuery(document).ready(function ($) {
             if ($('#offerwhere-form-user-number-container').is(':visible')) {
                 $('#offerwhere-form-activation-code-container').hide();
             }
+            $('.offerwhere-alert').hide();
+            $('.offerwhere-input-text').val('');
         });
     });
 
