@@ -6,8 +6,7 @@ if (!defined('ABSPATH')) {
 
 class Offerwhere_API
 {
-//    const OFFERWHERE_API_BASE_URL = 'https://api.offerwhere.com';
-    const OFFERWHERE_API_BASE_URL = 'http://192.168.0.66:8080';
+    const OFFERWHERE_API_BASE_URL = 'https://api.offerwhere.com';
 
     public static function offerwhere_post_user_number_confirmation_requests(
         $organisation_id,

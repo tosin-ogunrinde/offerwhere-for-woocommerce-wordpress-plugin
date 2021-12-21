@@ -481,7 +481,7 @@ class Offerwhere_WooCommerce
             <form method="post">
                 <div class="offerwhere-pb-4">
                     An <a href="https://www.offerwhere.com" rel="noopener" target="_blank">Offerwhere PIN</a> is
-                    required to collect the points. Enter your PIN below. If you don't have
+                    required to collect the points. Enter your PIN below. If you don’t have
                     one, <a href="https://www.offerwhere.com/sign-up" rel="noopener"
                             target="_blank">sign up</a> to get yours now.
                 </div>
