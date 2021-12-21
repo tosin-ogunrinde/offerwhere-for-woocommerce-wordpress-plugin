@@ -3,11 +3,11 @@ Contributors: offerwhere, tosinogunrinde
 Author URI: https://www.offerwhere.com
 Tags: loyalty program, reward program, points program, woocommerce, loyalty, reward, points, attract customers, retain customers
 Requires at least: 3.1
-Tested up to: 5.8.1
-Stable tag: 1.0.0
+Tested up to: 5.8.2
+Stable tag: 1.1.0
 Requires PHP: 7.0
 WC requires at least: 3.5
-WC tested up to: 5.8
+WC tested up to: 6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,20 +15,20 @@ Run your Points, Rewards, or Loyalty Programs online and in-store in minutes
 
 
 == Description ==
-Offerwhere is used by businesses to advertise their offers and to run their loyalty programs online, in-store or in-person. This plugin allows your customers to collect points whenever they place an order on your website if they provide their Offerwhere PIN, and when they have collected enough points, it automatically applies their discount to their next order.
+This plugin allows your customers to collect loyalty points whenever they place an order on your website. When they have collected enough points, it automatically applies their discount to their next order.
 
 = What you can do with this plugin =
-
-* Run one loyalty program online, in-store, or in-person. [Click here](https://www.offerwhere.com/attract-and-retain-more-customers?feature=loyalty-programs) to learn more about how Offerwhere helps businesses attract and retain more customers.
-* Run spend-based loyalty programs e.g. collect 5 points for every £1 spent.
-* Run transaction-based loyalty programs e.g. collect 1 point every time you spend at least £1.
+* Run the same loyalty program online, in-store, or in-person. [Click here](https://www.offerwhere.com/attract-and-retain-more-customers?feature=loyalty-programs) to learn more about how Offerwhere helps businesses attract and retain more customers.
+* Send special, weekly or monthly offers to your customers.
+* Run spend-based loyalty programs. For example, collect 5 points for every £1 spent.
+* Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.
 * View data on your loyalty program in your Offerwhere account.
 * Attract and retain more customers.
 
 
 == Installation ==
 = Before you start =
-This plugin requires you to have the WooCommerce plugin installed and activated in WordPress.
+This plugin requires you to have the WooCommerce plugin installed and activated in WordPress. You also need to have created your loyalty program on Offerwhere.
 
 = Getting started =
 You’ll need to do a few things to connect your website to your loyalty program.
@@ -43,19 +43,16 @@ You’ll need to do a few things to connect your website to your loyalty program
 == Frequently Asked Questions ==
 
 = Does a customer need to be logged in to use the plugin =
-No, they do not need to be logged in. They only need to provide their Offerwhere PIN. Every user on Offerwhere is issued with an Offerwhere PIN.
+No, a customer does not need to log in to use this plugin. They only need to provide their Offerwhere PIN. Everybody that has an Offerwhere account has a PIN.
 
 = What is an Offerwhere PIN =
-The Offerwhere PIN (Personal Identification Number) is an 8-character long unique number that is issued to every user on Offerwhere at sign-up.
+The Offerwhere PIN (Personal Identification Number) is a short and unique number that we provide to everyone at sign up.
 
 = How long does it take to sign up =
-In less than one minute. The Offerwhere PIN is sent to users via email after signing up.
-
-= How often does a customer need to provide their Offerwhere PIN =
-Assuming they are logged in, they’ll only need to provide their Offerwhere PIN once either on the Account or Checkout page. They can still provide their Offerwhere PIN on the Checkout page if they are not logged in.
+It takes less than one minute to sign up. The Offerwhere PIN is sent to users via email after signing up.
 
 = What happens if a customer does not provide their Offerwhere PIN =
-They can still place orders. They will not collect any points for that order or get any discount if they have collected enough points.
+They can still place orders. They will not collect points or get discounts if they do not provide their PIN.
 
 
 == Screenshots ==
@@ -74,7 +71,7 @@ They can still place orders. They will not collect any points for that order or 
 
 
 == Changelog ==
-= 1.0.0 =
-* Initial release
+= 1.1.0 =
+* Improve the change PIN journey.
 
-[Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/CHANGELOG.txt)
+[Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

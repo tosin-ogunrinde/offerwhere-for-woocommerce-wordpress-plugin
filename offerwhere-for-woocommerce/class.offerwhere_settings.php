@@ -110,30 +110,26 @@ class Offerwhere_Settings
         $valid = array();
         if (Offerwhere_Validator::offerwhere_is_valid_jwt($input[self::OFFERWHERE_API_KEY])) {
             try {
-                $data = json_decode(base64_decode(str_replace('_', '/', str_replace(
-                    '-',
-                    '+',
-                    explode('.', $input[self::OFFERWHERE_API_KEY])[1]
-                ))));
+                $data = json_decode(base64_decode(explode('.', $input[self::OFFERWHERE_API_KEY])[1]));
                 if (Offerwhere_Validator::offerwhere_is_valid_uuid($data->organisation_id)) {
                     $valid[self::OFFERWHERE_API_KEY] = $input[self::OFFERWHERE_API_KEY];
                     $valid[self::OFFERWHERE_ORGANISATION_ID] = $data->organisation_id;
                 } else {
                     self::offerwhere_add_settings_error_message(
                         self::OFFERWHERE_API_KEY_FIELD,
-                        'Enter a valid API Key'
+                        'Enter a valid API Key.'
                     );
                 }
             } catch (Exception $e) {
                 self::offerwhere_add_settings_error_message(
                     self::OFFERWHERE_API_KEY_FIELD,
-                    'Enter a valid API Key'
+                    'Enter a valid API Key.'
                 );
             }
         } else {
             self::offerwhere_add_settings_error_message(
                 self::OFFERWHERE_API_KEY_FIELD,
-                'Enter a valid API Key'
+                'Enter a valid API Key.'
             );
         }
         if (Offerwhere_Validator::offerwhere_is_valid_uuid($input[self::OFFERWHERE_LOYALTY_PROGRAM_ID])) {
@@ -141,7 +137,7 @@ class Offerwhere_Settings
         } else {
             self::offerwhere_add_settings_error_message(
                 self::OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD,
-                'Enter a valid Loyalty Program Id'
+                'Enter a valid Loyalty Program Id.'
             );
         }
         if (Offerwhere_Validator::offerwhere_is_valid_uuid($input[self::OFFERWHERE_ACTIVITY_ID])) {
@@ -149,10 +145,9 @@ class Offerwhere_Settings
         } else {
             self::offerwhere_add_settings_error_message(
                 self::OFFERWHERE_ACTIVITY_ID_FIELD,
-                'Enter a valid Activity Id'
+                'Enter a valid Activity Id.'
             );
         }
-
         if (!array_key_exists(self::OFFERWHERE_API_KEY, $valid) ||
             !array_key_exists(self::OFFERWHERE_ORGANISATION_ID, $valid) ||
             !array_key_exists(self::OFFERWHERE_LOYALTY_PROGRAM_ID, $valid) ||
@@ -173,8 +168,10 @@ class Offerwhere_Settings
                 $valid[self::OFFERWHERE_DEFAULT_AMOUNT_PER_REDEMPTION] = $result['defaultAmountPerRedemption'];
                 $valid[self::OFFERWHERE_DEFAULT_POINTS_PER_REDEMPTION] = $result['defaultPointsPerRedemption'];
                 if (isset($result['activities'])) {
+                    $activity_found = false;
                     foreach ($result['activities'] as &$activity) {
                         if ($activity['id'] === $valid[self::OFFERWHERE_ACTIVITY_ID]) {
+                            $activity_found = true;
                             if (isset($activity['loyaltySpendBasedReward'])) {
                                 $valid[self::OFFERWHERE_MINIMUM_SPEND] =
                                     $activity['loyaltySpendBasedReward']['minimumSpend'];
@@ -192,7 +189,28 @@ class Offerwhere_Settings
                             }
                         }
                     }
+                    if (!$activity_found) {
+                        self::offerwhere_add_settings_error_message(
+                            self::OFFERWHERE_ACTIVITY_ID_FIELD,
+                            'Activity Id cannot be found.'
+                        );
+                    }
                 }
+            } elseif ($response_code === 401) {
+                self::offerwhere_add_settings_error_message(
+                    self::OFFERWHERE_API_KEY_FIELD,
+                    'Enter a valid API Key.'
+                );
+            } elseif ($response_code === 402) {
+                self::offerwhere_add_settings_error_message(
+                    self::OFFERWHERE_API_KEY_FIELD,
+                    'You need an active subscription to run loyalty programs.'
+                );
+            } elseif ($response_code === 404) {
+                self::offerwhere_add_settings_error_message(
+                    self::OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD,
+                    'Loyalty Program Id cannot be found.'
+                );
             }
         }
         return $valid;

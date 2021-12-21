@@ -6,20 +6,39 @@ if (!defined('ABSPATH')) {
 
 class Offerwhere_API
 {
-    const OFFERWHERE_API_BASE_URL = 'https://api.offerhwere.com';
+    const OFFERWHERE_API_BASE_URL = 'https://api.offerwhere.com';
 
-    public static function offerwhere_get_user_transaction_snapshot(
+    public static function offerwhere_post_user_number_confirmation_requests(
         $organisation_id,
         $loyalty_program_id,
         $user_number,
         $token
     ) {
         $api = esc_url(sprintf(
-            '%s/v1/organisations/%s/loyalty-programs/%s/user-transaction-snapshots?user-number=%s',
+            '%s/v1/organisations/%s/loyalty-programs/%s/user-number-confirmation-requests',
+            self::OFFERWHERE_API_BASE_URL,
+            $organisation_id,
+            $loyalty_program_id
+        ));
+        $args = self::offerwhere_get_default_request_args($token);
+        $args['body'] = $user_number;
+        $args['headers']['Content-Type'] = 'text/plain; charset=utf-8';
+        return wp_remote_post($api, $args);
+    }
+
+    public static function offerwhere_get_user_transaction_snapshot(
+        $organisation_id,
+        $loyalty_program_id,
+        $user_number,
+        $activation_code,
+        $token
+    ) {
+        $api = esc_url(sprintf(
+            '%s/v1/organisations/%s/loyalty-programs/%s/user-transaction-snapshots?%s',
             self::OFFERWHERE_API_BASE_URL,
             $organisation_id,
             $loyalty_program_id,
-            $user_number
+            $user_number !== null ? 'user-number=' . $user_number : 'activation-code=' . $activation_code
         ));
         return wp_remote_get($api, self::offerwhere_get_default_request_args($token));
     }
