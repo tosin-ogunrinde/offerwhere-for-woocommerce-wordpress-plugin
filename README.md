@@ -6,13 +6,13 @@ collected enough points, it automatically applies their discount to their next o
 ## What you can do with this plugin
 
 * Run the same loyalty program online, in-store, or
-  in-person. [Click here](https://www.offerwhere.com/attract-and-retain-more-customers?feature=loyalty-programs) to
-  learn more about how Offerwhere helps businesses attract and retain more customers.
+  in-person. [Click here](https://www.offerwhere.com/grow-business/loyalty-programs) to learn more about how Offerwhere
+  can help your business grow.
 * Send special, weekly or monthly offers to your customers.
 * Run spend-based loyalty programs. For example, collect 5 points for every £1 spent.
 * Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.
 * View data on your loyalty program in your Offerwhere account.
-* Attract and retain more customers.
+* Grow your business.
 
 ## Installation
 
@@ -53,8 +53,8 @@ They can still place orders. They will not collect points or get discounts if th
 
 ## Changelog
 
-### 1.1.0
+### 1.2.0
 
-* Improve the change PIN journey.
+* Update plugin URL.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)
