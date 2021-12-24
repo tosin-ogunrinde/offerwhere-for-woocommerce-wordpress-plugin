@@ -1,4 +1,7 @@
 == Changelog ==
+= 1.2.0 =
+* Update plugin URL.
+
 = 1.1.0 =
 * Improve the change PIN journey.
 
