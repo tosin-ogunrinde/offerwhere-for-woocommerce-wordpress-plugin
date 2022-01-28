@@ -2,10 +2,10 @@
 /**
  * Plugin Name:             Offerwhere for WooCommerce
  * Plugin URI:              https://www.offerwhere.com/grow-business/loyalty-programs
- * Description:             Run a Loyalty Program on your website and from wherever you are in minutes.
- * Version:                 1.2.0
+ * Description:             Retain more customers. Run an effective loyalty program on your website, in your store, or from your home in minutes.
+ * Version:                 1.3.0
  * Requires at least:       3.1
- * Tested up to:            5.8.2
+ * Tested up to:            5.9
  * Requires PHP:            7.0
  * WC requires at least:    3.5
  * WC tested up to:         6.0
@@ -13,7 +13,6 @@
  * Author URI:              https://www.offerwhere.com
  * License:                 GPLv2 or later
  * License URI:             http://www.gnu.org/licenses/gpl-2.0.html
- *
  */
 
 if (!defined('ABSPATH')) {
@@ -21,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 const OFFERWHERE_WORDPRESS_MINIMUM_VERSION = '3.1';
-const OFFERWHERE_VERSION = '1.2.0';
+const OFFERWHERE_VERSION = '1.3.0';
 const OFFERWHERE_WOOCOMMERCE_MINIMUM_VERSION = '3.5';
 
 define('OFFERWHERE_PLUGIN_DIR', plugin_dir_path(__FILE__));

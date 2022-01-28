@@ -3,27 +3,27 @@ Contributors: offerwhere, tosinogunrinde
 Author URI: https://www.offerwhere.com
 Tags: loyalty program, reward program, points program, woocommerce, loyalty, reward, points
 Requires at least: 3.1
-Tested up to: 5.8.2
-Stable tag: 1.2.0
+Tested up to: 5.9
+Stable tag: 1.3.0
 Requires PHP: 7.0
 WC requires at least: 3.5
 WC tested up to: 6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Run your Points, Rewards, or Loyalty Programs online and in-store in minutes
+Retain more customers. Run an effective loyalty program on your website, in your store, or from your home in minutes.
 
 
 == Description ==
 This plugin allows your customers to collect loyalty points whenever they place an order on your website. When they have collected enough points, it automatically applies their discount to their next order.
 
 = What you can do with this plugin =
-* Run the same loyalty program online, in-store, or in-person. [Click here](https://www.offerwhere.com/grow-business/loyalty-programs) to learn more about how Offerwhere can help your business grow.
+* Run the same loyalty program on your website, in your store, or from your home in minutes. Learn more about how [Offerwhere can help your business grow](https://www.offerwhere.com/grow-business/loyalty-programs).
 * Send special, weekly or monthly offers to your customers.
 * Run spend-based loyalty programs. For example, collect 5 points for every £1 spent.
 * Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.
 * View data on your loyalty program in your Offerwhere account.
-* Grow your business.
+* Retain more customers and grow your business.
 
 
 == Installation ==
@@ -71,7 +71,8 @@ They can still place orders. They will not collect points or get discounts if th
 
 
 == Changelog ==
-= 1.2.0 =
-* Update plugin URL.
+= 1.3.0 =
+* Update CSS.
+* Add support for WordPress 5.9.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)
