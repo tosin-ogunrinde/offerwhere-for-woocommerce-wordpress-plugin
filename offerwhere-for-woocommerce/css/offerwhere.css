@@ -3,6 +3,10 @@
     margin-top: 2rem;
 }
 
+.offerwhere bdi, .offerwhere h3 {
+    color: #fff !important;
+}
+
 @media (min-width: 576px) {
     .offerwhere {
         max-width: 540px;
@@ -18,11 +22,13 @@
 }
 
 .offerwhere-card-link a {
+    text-decoration: underline !important;
     text-decoration-style: dotted !important;
     color: #fff !important;
 }
 
 .offerwhere-card-link a:hover {
+    text-decoration: underline !important;
     text-decoration-style: solid !important;
     color: #fff !important;
 }
