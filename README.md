@@ -52,8 +52,10 @@ They can still place orders. They will not collect points or get discounts if th
 
 ## Changelog
 
-### 1.4.0
+### 1.5.0
 
-* Update CSS.
+* Prevent card from scrolling to top on click.
+* Standardize size of loyalty program name.
+* Update tags.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

@@ -1,6 +1,7 @@
 jQuery(document).ready(function ($) {
     'use strict';
-    $("#offerwhere-form-ask-user-for-number-toggle-button").click(function () {
+    $("#offerwhere-form-ask-user-for-number-toggle-button").click(function ($e) {
+        $e.preventDefault();
         $('#offerwhere-form-user-number-container').toggle('fast', function () {
             if ($('#offerwhere-form-user-number-container').is(':visible')) {
                 $('#offerwhere-form-activation-code-container').hide();
