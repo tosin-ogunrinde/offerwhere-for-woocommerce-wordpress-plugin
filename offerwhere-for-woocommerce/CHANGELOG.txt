@@ -1,4 +1,9 @@
 == Changelog ==
+= 1.5.0 =
+* Prevent card from scrolling to top on click.
+* Standardize size of loyalty program name.
+* Update tags.
+
 = 1.4.0 =
 * Update CSS.
 
