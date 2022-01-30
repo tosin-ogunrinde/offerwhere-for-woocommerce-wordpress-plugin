@@ -4,7 +4,7 @@ Author URI: https://www.offerwhere.com
 Tags: loyalty program, reward program, points program, woocommerce, loyalty, reward, points
 Requires at least: 3.1
 Tested up to: 5.9
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 Requires PHP: 7.0
 WC requires at least: 3.5
 WC tested up to: 6.0
@@ -71,8 +71,7 @@ They can still place orders. They will not collect points or get discounts if th
 
 
 == Changelog ==
-= 1.3.0 =
+= 1.4.0 =
 * Update CSS.
-* Add support for WordPress 5.9.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

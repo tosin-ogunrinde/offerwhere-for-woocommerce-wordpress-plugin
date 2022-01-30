@@ -52,9 +52,8 @@ They can still place orders. They will not collect points or get discounts if th
 
 ## Changelog
 
-### 1.3.0
+### 1.4.0
 
 * Update CSS.
-* Add support for WordPress 5.9.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)
