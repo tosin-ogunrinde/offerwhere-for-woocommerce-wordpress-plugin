@@ -1,6 +1,16 @@
 .offerwhere {
     width: 100%;
     margin-top: 2rem;
+    line-height: 1.5 !important;
+}
+
+.offerwhere h3 {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.offerwhere bdi {
+    font-weight: normal !important;
 }
 
 .offerwhere bdi, .offerwhere h3 {
@@ -137,7 +147,7 @@
 }
 
 .offerwhere-text-small {
-    font-size: .675rem !important;
+    font-size: .725rem !important;
 }
 
 .offerwhere-form {
