@@ -1,4 +1,7 @@
 == Changelog ==
+= 1.7.0 =
+* Update plugin URI.
+
 = 1.6.0 =
 * Add title to img tag.
 

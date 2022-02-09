@@ -52,8 +52,8 @@ They can still place orders. They will not collect points or get discounts if th
 
 ## Changelog
 
-### 1.6.0
+### 1.7.0
 
-* Add title to img tag.
+* Update plugin URI.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)
