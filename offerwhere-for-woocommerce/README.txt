@@ -4,7 +4,7 @@ Author URI: https://www.offerwhere.com
 Tags: Loyalty program, loyalty, points, Points and Rewards, Rewards, woocommerce
 Requires at least: 3.1
 Tested up to: 5.9
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 Requires PHP: 7.0
 WC requires at least: 3.5
 WC tested up to: 6.0
@@ -18,10 +18,10 @@ Retain more customers. Run an effective loyalty program on your website, in your
 This plugin allows your customers to collect loyalty points whenever they place an order on your website. When they have collected enough points, it automatically applies their discount to their next order.
 
 = What you can do with this plugin =
-* Run the same loyalty program on your website, in your store, or from your home in minutes. Learn more about how [Offerwhere can help your business grow](https://www.offerwhere.com/grow-business/loyalty-programs).
+* Run the same loyalty program on your website, in your store, or from your home in minutes. Learn more about how [Offerwhere can help your business grow](https://www.offerwhere.com/grow-business).
 * Send special, weekly or monthly offers to your customers.
-* Run spend-based loyalty programs. For example, collect 5 points for every £1 spent.
-* Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.
+* Run spend-based loyalty programs. For example, collect 5 points for every £1.00 spent.
+* Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.00.
 * View data on your loyalty program in your Offerwhere account.
 * Retain more customers and grow your business.
 
@@ -71,7 +71,7 @@ They can still place orders. They will not collect points or get discounts if th
 
 
 == Changelog ==
-= 1.7.0 =
-* Update plugin URI.
+= 1.8.0 =
+* Remove redundant payload.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

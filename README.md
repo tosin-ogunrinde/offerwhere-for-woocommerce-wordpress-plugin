@@ -6,10 +6,10 @@ collected enough points, it automatically applies their discount to their next o
 ## What you can do with this plugin
 
 * Run the same loyalty program on your website, in your store, or from your home in minutes. Learn more about
-  how [Offerwhere can help your business grow](https://www.offerwhere.com/grow-business/loyalty-programs).
+  how [Offerwhere can help your business grow](https://www.offerwhere.com/grow-business).
 * Send special, weekly or monthly offers to your customers.
-* Run spend-based loyalty programs. For example, collect 5 points for every £1 spent.
-* Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.
+* Run spend-based loyalty programs. For example, collect 5 points for every £1.00 spent.
+* Run transaction-based loyalty programs. For example, collect 1 point every time you spend at least £1.00.
 * View data on your loyalty program in your Offerwhere account.
 * Retain more customers and grow your business.
 
@@ -52,8 +52,8 @@ They can still place orders. They will not collect points or get discounts if th
 
 ## Changelog
 
-### 1.7.0
+### 1.8.0
 
-* Update plugin URI.
+* Remove redundant payload.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

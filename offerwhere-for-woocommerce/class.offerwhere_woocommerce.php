@@ -541,8 +541,7 @@ class Offerwhere_WooCommerce
             'spend' => $order->get_total() * 100,
             'credit' => $reward ?
                 ((Offerwhere_Settings::offerwhere_get_default_points_per_redemption() * $reward * 100) /
-                    Offerwhere_Settings::offerwhere_get_default_amount_per_redemption()) : null,
-            'date' => date(DATE_ISO8601)
+                    Offerwhere_Settings::offerwhere_get_default_amount_per_redemption()) : null
         );
         self::offerwhere_woocommerce_post_transaction($transaction, $order_id);
         self::offerwhere_clear_session(array(self::OFFERWHERE_USER_DISCOUNT_APPLIED));
