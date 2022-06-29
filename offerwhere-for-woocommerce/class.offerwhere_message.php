@@ -26,6 +26,11 @@ class="offerwhere-alert-link" href="https://www.offerwhere.com/sign-up" rel="noo
                             Sign up</a> with this PIN to retain the points you have collected.');
     }
 
+    public static function offerwhere_render_inactive_user_number_error_message()
+    {
+        self::offerwhere_render_error_message('You need to activate your account to use this PIN. Click the link in the email we sent to you to activate your account.');
+    }
+
     public static function offerwhere_render_unknown_activation_code_error_message()
     {
         self::offerwhere_render_error_message('The activation code cannot be found or has expired.');

@@ -64,7 +64,8 @@ class Offerwhere_WooCommerce
         $show_edit_pin_form,
         $show_points_lost,
         $order_total
-    ) {
+    )
+    {
         if (Offerwhere_Settings::offerwhere_is_setting_missing()) {
             return;
         }
@@ -287,6 +288,8 @@ class Offerwhere_WooCommerce
                     Offerwhere_Message::offerwhere_render_user_disabled_error_message();
                 } elseif ($response_code === Offerwhere_HTTP_Status::PRECONDITION_FAILED) {
                     Offerwhere_Message::offerwhere_render_unregistered_user_number_error_message();
+                } elseif ($response_code === Offerwhere_HTTP_Status::BAD_REQUEST) {
+                    Offerwhere_Message::offerwhere_render_inactive_user_number_error_message();
                 } else {
                     Offerwhere_Message::offerwhere_render_internal_server_error_message();
                 }
@@ -360,11 +363,11 @@ class Offerwhere_WooCommerce
         ?>
         <div class="offerwhere-form offerwhere-mt-3" id="offerwhere-form-activation-code-container"
              style=<?php echo array_key_exists(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER, $_SESSION) ?
-                'display:block' : 'display:none' ?>>
+            'display:block' : 'display:none' ?>>
             <?php
             if (array_key_exists($button_submit_activation_code, $_POST) &&
                 array_key_exists(self::OFFERWHERE_ACTIVATION_CODE, $_POST) &&
-            array_key_exists(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER, $_SESSION)) {
+                array_key_exists(self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER, $_SESSION)) {
                 self::offerwhere_apply_activation_code(
                     $_POST[self::OFFERWHERE_ACTIVATION_CODE],
                     $_SESSION[self::OFFERWHERE_ACTIVATION_CODE_USER_NUMBER]
@@ -423,7 +426,8 @@ class Offerwhere_WooCommerce
         $user_number,
         $manual_entry,
         $activation_journey
-    ) {
+    )
+    {
         if (is_array($response) && !is_wp_error($response)) {
             $response_code = wp_remote_retrieve_response_code($response);
             if ($response_code === Offerwhere_HTTP_Status::OK) {

@@ -1,7 +1,7 @@
 ====== Offerwhere Points, Rewards & Loyalty Programs for WooCommerce ========
 Contributors: offerwhere, tosinogunrinde
 Author URI: https://www.offerwhere.com
-Tags: Loyalty program, loyalty, points, Points and Rewards, Rewards, woocommerce
+Tags: Reward program, Loyalty program, Points program, Points and Rewards, Rewards, woocommerce
 Requires at least: 3.1
 Tested up to: 5.9
 Stable tag: 1.8.0
@@ -49,7 +49,7 @@ No, a customer does not need to log in to use this plugin. They only need to pro
 The Offerwhere PIN (Personal Identification Number) is a short and unique number that we provide to everyone at sign up.
 
 = How long does it take to sign up =
-It takes less than one minute to sign up. The Offerwhere PIN is sent to users via email after signing up.
+It takes less than one minute to sign up.
 
 = What happens if a customer does not provide their Offerwhere PIN =
 They can still place orders. They will not collect points or get discounts if they do not provide their PIN.
