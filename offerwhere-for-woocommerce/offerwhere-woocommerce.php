@@ -40,7 +40,7 @@ register_uninstall_hook(__FILE__, 'offerwhere_run_uninstall_routine');
 function offerwhere_plugins_loaded()
 {
     if (Offerwhere_Settings::offerwhere_is_setting_missing()) {
-        add_action('admin_notices', 'offerwhere_missing_api_key_notice');
+        add_action('admin_notices', 'offerwhere_missing_key_notice');
         return;
     }
     if (version_compare($GLOBALS['wp_version'], OFFERWHERE_WORDPRESS_MINIMUM_VERSION, '<')) {
@@ -58,7 +58,7 @@ function offerwhere_plugins_loaded()
     add_action('init', array(Offerwhere_WooCommerce::OFFERWHERE_WOOCOMMERCE_CLASS, 'init'));
 }
 
-function offerwhere_missing_api_key_notice()
+function offerwhere_missing_key_notice()
 {
     ?>
     <div class="error"><p>Offerwhere is not configured. Enter the values required.</p></div>

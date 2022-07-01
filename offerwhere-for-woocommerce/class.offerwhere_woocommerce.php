@@ -35,7 +35,7 @@ class Offerwhere_WooCommerce
             return;
         }
         ?>
-        <script id="offerwhere-points-bot" src="https://d27st42bbpp5a4.cloudfront.net/v1/offerwhere-points-bot.js?key=<?php echo esc_attr(Offerwhere_Settings::offerwhere_get_public_api_key())?>" defer crossOrigin="anonymous"></script>
+        <script id="offerwhere-points-bot" src="https://d27st42bbpp5a4.cloudfront.net/v1/offerwhere-points-bot.js?key=<?php echo esc_attr(Offerwhere_Settings::offerwhere_get_public_key())?>" defer crossOrigin="anonymous"></script>
         <?php
     }
 
@@ -50,7 +50,7 @@ class Offerwhere_WooCommerce
             Offerwhere_Settings::offerwhere_get_organisation_id(),
             Offerwhere_Settings::offerwhere_get_loyalty_program_id(),
             $_COOKIE[self::OFFERWHERE_USER_NUMBER],
-            Offerwhere_Settings::offerwhere_get_private_api_key()
+            Offerwhere_Settings::offerwhere_get_private_key()
         );
         if (is_array($response) && !is_wp_error($response)) {
             $response_code = wp_remote_retrieve_response_code($response);
@@ -117,7 +117,7 @@ class Offerwhere_WooCommerce
             Offerwhere_Settings::offerwhere_get_organisation_id(),
             Offerwhere_Settings::offerwhere_get_loyalty_program_id(),
             $transaction,
-            Offerwhere_Settings::offerwhere_get_private_api_key(),
+            Offerwhere_Settings::offerwhere_get_private_key(),
             sprintf(
                 '%s~%s~%s',
                 Offerwhere_Settings::offerwhere_get_loyalty_program_id(),
