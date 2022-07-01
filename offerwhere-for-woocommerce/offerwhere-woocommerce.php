@@ -2,13 +2,13 @@
 /**
  * Plugin Name:             Offerwhere for WooCommerce
  * Plugin URI:              https://www.offerwhere.com/products/offerwhere-for-woocommerce
- * Description:             Retain more customers. Run an effective loyalty program on your website, in your store, or from your home in minutes.
- * Version:                 1.8.0
+ * Description:             Reward customers for purchases. Launch an effective loyalty program on your website in minutes. Plus, run the same loyalty program in-store and wherever you sell.
+ * Version:                 2.0.0
  * Requires at least:       3.1
- * Tested up to:            5.9
+ * Tested up to:            6.0
  * Requires PHP:            7.0
  * WC requires at least:    3.5
- * WC tested up to:         6.0
+ * WC tested up to:         6.6
  * Author:                  Offerwhere
  * Author URI:              https://www.offerwhere.com
  * License:                 GPLv2 or later
@@ -20,24 +20,21 @@ if (!defined('ABSPATH')) {
 }
 
 const OFFERWHERE_WORDPRESS_MINIMUM_VERSION = '3.1';
-const OFFERWHERE_VERSION = '1.8.0';
+const OFFERWHERE_VERSION = '2.0.0';
 const OFFERWHERE_WOOCOMMERCE_MINIMUM_VERSION = '3.5';
 
 define('OFFERWHERE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
+require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_http_status.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_validator.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_settings.php');
-require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_http_status.php');
-require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_message.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_woocommerce.php');
 require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_api.php');
-require_once(OFFERWHERE_PLUGIN_DIR . 'class.offerwhere_database.php');
 require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 add_action('plugins_loaded', 'offerwhere_plugins_loaded');
 add_action('init', array(Offerwhere_Settings::OFFERWHERE_SETTINGS_CLASS, 'init'));
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'offerwhere_add_plugin_page_settings_link');
-register_activation_hook(__FILE__, 'offerwhere_run_activation_routine');
 register_uninstall_hook(__FILE__, 'offerwhere_run_uninstall_routine');
 
 function offerwhere_plugins_loaded()
@@ -102,13 +99,7 @@ function offerwhere_add_plugin_page_settings_link($links)
     return $links;
 }
 
-function offerwhere_run_activation_routine()
-{
-    Offerwhere_Database::offerwhere_create_user_table_if_not_exists();
-}
-
 function offerwhere_run_uninstall_routine()
 {
-    Offerwhere_Database::offerwhere_drop_user_table();
     Offerwhere_Settings::offerwhere_delete_settings();
 }

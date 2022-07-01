@@ -7,21 +7,23 @@ if (!defined('ABSPATH')) {
 class Offerwhere_Settings
 {
     const OFFERWHERE_SETTINGS_CLASS = 'Offerwhere_Settings';
-    const OFFERWHERE_API_KEY = 'api_key';
-    const OFFERWHERE_API_KEY_FIELD = 'offerwhere_api_key';
+    const OFFERWHERE_PRIVATE_API_KEY = 'private_api_key';
+    const OFFERWHERE_PUBLIC_API_KEY = 'public_api_key';
+    const OFFERWHERE_PRIVATE_API_KEY_FIELD = 'offerwhere_private_api_key';
+    const OFFERWHERE_PUBLIC_API_KEY_FIELD = 'offerwhere_public_api_key';
     const OFFERWHERE_ORGANISATION_ID = 'organisation_id';
     const OFFERWHERE_LOYALTY_PROGRAM_ID = 'loyalty_program_id';
-    const OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD = 'offerwhere_loyalty_program_id';
     const OFFERWHERE_LOYALTY_PROGRAM_NAME = 'loyalty_program_name';
     const OFFERWHERE_MINIMUM_SPEND = 'minimum_spend';
     const OFFERWHERE_POINTS_PER_MINIMUM_SPEND = 'points_per_minimum_spend';
     const OFFERWHERE_POINTS_PER_TRANSACTION = 'points_per_transaction';
     const OFFERWHERE_ACTIVITY_ID = 'activity_id';
-    const OFFERWHERE_ACTIVITY_ID_FIELD = 'offerwhere_activity_id';
     const OFFERWHERE_DEFAULT_POINTS_PER_REDEMPTION = 'default_points_per_redemption';
     const OFFERWHERE_DEFAULT_AMOUNT_PER_REDEMPTION = 'default_amount_per_redemption';
     const OFFERWHERE_SETTINGS = 'offerwhere_settings';
     const OFFERWHERE_SETTINGS_PAGE_SLUG = 'offerwhere-settings';
+    const INVALID_PUBLIC_KEY_ERROR_MESSAGE = "Enter a valid public API key.";
+    const INVALID_PRIVATE_KEY_ERROR_MESSAGE = "Enter a valid private API key.";
 
     public static function init()
     {
@@ -78,25 +80,17 @@ class Offerwhere_Settings
         );
 
         add_settings_field(
-            self::OFFERWHERE_API_KEY_FIELD,
-            'API Key',
-            array(self::OFFERWHERE_SETTINGS_CLASS, 'offerwhere_api_key_field_callback'),
+            self::OFFERWHERE_PRIVATE_API_KEY_FIELD,
+            'Private API key',
+            array(self::OFFERWHERE_SETTINGS_CLASS, 'offerwhere_private_api_key_field_callback'),
             self::OFFERWHERE_SETTINGS_PAGE_SLUG,
             $api_key_section
         );
 
         add_settings_field(
-            self::OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD,
-            'Loyalty Program Id',
-            array(self::OFFERWHERE_SETTINGS_CLASS, 'offerwhere_loyalty_program_id_field_callback'),
-            self::OFFERWHERE_SETTINGS_PAGE_SLUG,
-            $api_key_section
-        );
-
-        add_settings_field(
-            self::OFFERWHERE_ACTIVITY_ID_FIELD,
-            'Activity Id',
-            array(self::OFFERWHERE_SETTINGS_CLASS, 'offerwhere_activity_id_field_callback'),
+            self::OFFERWHERE_PUBLIC_API_KEY_FIELD,
+            'Public API key',
+            array(self::OFFERWHERE_SETTINGS_CLASS, 'offerwhere_public_api_key_field_callback'),
             self::OFFERWHERE_SETTINGS_PAGE_SLUG,
             $api_key_section
         );
@@ -108,69 +102,72 @@ class Offerwhere_Settings
     public static function offerwhere_settings_callback($input)
     {
         $valid = array();
-        if (Offerwhere_Validator::offerwhere_is_valid_jwt($input[self::OFFERWHERE_API_KEY])) {
+        $private_api_key_json = null;
+        $trimmed_private_key = trim($input[self::OFFERWHERE_PRIVATE_API_KEY]);
+        if (Offerwhere_Validator::offerwhere_is_valid_jwt($trimmed_private_key)) {
             try {
-                $data = json_decode(base64_decode(explode('.', $input[self::OFFERWHERE_API_KEY])[1]));
-                if (Offerwhere_Validator::offerwhere_is_valid_uuid($data->organisation_id)) {
-                    $valid[self::OFFERWHERE_API_KEY] = $input[self::OFFERWHERE_API_KEY];
-                    $valid[self::OFFERWHERE_ORGANISATION_ID] = $data->organisation_id;
+                $private_api_key_json = json_decode(base64_decode(explode('.', $trimmed_private_key)[1]));
+                if (Offerwhere_Validator::offerwhere_is_valid_uuid($private_api_key_json->organisation_id)) {
+                    $valid[self::OFFERWHERE_PRIVATE_API_KEY] = $trimmed_private_key;
                 } else {
                     self::offerwhere_add_settings_error_message(
-                        self::OFFERWHERE_API_KEY_FIELD,
-                        'Enter a valid API Key.'
+                        self::OFFERWHERE_PRIVATE_API_KEY_FIELD,
+                        self::INVALID_PRIVATE_KEY_ERROR_MESSAGE
                     );
                 }
             } catch (Exception $e) {
                 self::offerwhere_add_settings_error_message(
-                    self::OFFERWHERE_API_KEY_FIELD,
-                    'Enter a valid API Key.'
+                    self::OFFERWHERE_PRIVATE_API_KEY_FIELD,
+                    self::INVALID_PRIVATE_KEY_ERROR_MESSAGE
                 );
             }
         } else {
             self::offerwhere_add_settings_error_message(
-                self::OFFERWHERE_API_KEY_FIELD,
-                'Enter a valid API Key.'
+                self::OFFERWHERE_PRIVATE_API_KEY_FIELD,
+                self::INVALID_PRIVATE_KEY_ERROR_MESSAGE
             );
         }
-        if (Offerwhere_Validator::offerwhere_is_valid_uuid($input[self::OFFERWHERE_LOYALTY_PROGRAM_ID])) {
-            $valid[self::OFFERWHERE_LOYALTY_PROGRAM_ID] = $input[self::OFFERWHERE_LOYALTY_PROGRAM_ID];
-        } else {
+        if ($private_api_key_json === null) {
+            return $valid;
+        }
+        $public_api_key_json = null;
+        try {
+            $trimmed_public_key = trim($input[self::OFFERWHERE_PUBLIC_API_KEY]);
+            $public_api_key_json = json_decode(base64_decode($trimmed_public_key));
+            if (Offerwhere_Validator::offerwhere_is_valid_uuid($public_api_key_json->organisationId) &&
+                $public_api_key_json->organisationId === $private_api_key_json->organisation_id) {
+                $valid[self::OFFERWHERE_PUBLIC_API_KEY] = $trimmed_public_key;
+            } else {
+                self::offerwhere_add_settings_error_message(
+                    self::OFFERWHERE_PUBLIC_API_KEY_FIELD,
+                    self::INVALID_PUBLIC_KEY_ERROR_MESSAGE
+                );
+            }
+        } catch (Exception $e) {
             self::offerwhere_add_settings_error_message(
-                self::OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD,
-                'Enter a valid Loyalty Program Id.'
+                self::OFFERWHERE_PUBLIC_API_KEY_FIELD,
+                self::INVALID_PUBLIC_KEY_ERROR_MESSAGE
             );
         }
-        if (Offerwhere_Validator::offerwhere_is_valid_uuid($input[self::OFFERWHERE_ACTIVITY_ID])) {
-            $valid[self::OFFERWHERE_ACTIVITY_ID] = $input[self::OFFERWHERE_ACTIVITY_ID];
-        } else {
-            self::offerwhere_add_settings_error_message(
-                self::OFFERWHERE_ACTIVITY_ID_FIELD,
-                'Enter a valid Activity Id.'
-            );
-        }
-        if (!array_key_exists(self::OFFERWHERE_API_KEY, $valid) ||
-            !array_key_exists(self::OFFERWHERE_ORGANISATION_ID, $valid) ||
-            !array_key_exists(self::OFFERWHERE_LOYALTY_PROGRAM_ID, $valid) ||
-            !array_key_exists(self::OFFERWHERE_ACTIVITY_ID, $valid)) {
+
+        if (!array_key_exists(self::OFFERWHERE_PRIVATE_API_KEY, $valid) ||
+            !array_key_exists(self::OFFERWHERE_PUBLIC_API_KEY, $valid)) {
             return $valid;
         }
         $response = Offerwhere_API::offerwhere_get_loyalty_program(
-            $valid[self::OFFERWHERE_ORGANISATION_ID],
-            $valid[self::OFFERWHERE_LOYALTY_PROGRAM_ID],
-            $valid[self::OFFERWHERE_API_KEY]
+            $public_api_key_json->organisationId,
+            $public_api_key_json->loyaltyProgramId,
+            $valid[self::OFFERWHERE_PRIVATE_API_KEY]
         );
         if (is_array($response) && !is_wp_error($response)) {
             $response_code = wp_remote_retrieve_response_code($response);
-            if ($response_code === 200) {
+            if ($response_code === Offerwhere_HTTP_Status::OK) {
                 $response_body = wp_remote_retrieve_body($response);
                 $result = json_decode($response_body, true);
-                $valid[self::OFFERWHERE_LOYALTY_PROGRAM_NAME] = $result['name'];
-                $valid[self::OFFERWHERE_DEFAULT_AMOUNT_PER_REDEMPTION] = $result['defaultAmountPerRedemption'];
-                $valid[self::OFFERWHERE_DEFAULT_POINTS_PER_REDEMPTION] = $result['defaultPointsPerRedemption'];
                 if (isset($result['activities'])) {
                     $activity_found = false;
                     foreach ($result['activities'] as &$activity) {
-                        if ($activity['id'] === $valid[self::OFFERWHERE_ACTIVITY_ID]) {
+                        if ($activity['id'] === $public_api_key_json->activityId) {
                             $activity_found = true;
                             if (isset($activity['loyaltySpendBasedReward'])) {
                                 $valid[self::OFFERWHERE_MINIMUM_SPEND] =
@@ -189,27 +186,29 @@ class Offerwhere_Settings
                             }
                         }
                     }
-                    if (!$activity_found) {
+                    if ($activity_found) {
+                        $valid[self::OFFERWHERE_ORGANISATION_ID] = $public_api_key_json->organisationId;
+                        $valid[self::OFFERWHERE_LOYALTY_PROGRAM_ID] = $public_api_key_json->loyaltyProgramId;
+                        $valid[self::OFFERWHERE_ACTIVITY_ID] = $public_api_key_json->activityId;
+                        $valid[self::OFFERWHERE_LOYALTY_PROGRAM_NAME] = $result['name'];
+                        $valid[self::OFFERWHERE_DEFAULT_AMOUNT_PER_REDEMPTION] = $result['defaultAmountPerRedemption'];
+                        $valid[self::OFFERWHERE_DEFAULT_POINTS_PER_REDEMPTION] = $result['defaultPointsPerRedemption'];
+                    } else {
                         self::offerwhere_add_settings_error_message(
-                            self::OFFERWHERE_ACTIVITY_ID_FIELD,
-                            'Activity Id cannot be found.'
+                            self::OFFERWHERE_PUBLIC_API_KEY_FIELD,
+                            self::INVALID_PUBLIC_KEY_ERROR_MESSAGE
                         );
                     }
                 }
-            } elseif ($response_code === 401) {
+            } elseif ($response_code === Offerwhere_HTTP_Status::PAYMENT_REQUIRED) {
                 self::offerwhere_add_settings_error_message(
-                    self::OFFERWHERE_API_KEY_FIELD,
-                    'Enter a valid API Key.'
-                );
-            } elseif ($response_code === 402) {
-                self::offerwhere_add_settings_error_message(
-                    self::OFFERWHERE_API_KEY_FIELD,
+                    self::OFFERWHERE_PRIVATE_API_KEY_FIELD,
                     'You need an active subscription to run loyalty programs.'
                 );
-            } elseif ($response_code === 404) {
+            } else {
                 self::offerwhere_add_settings_error_message(
-                    self::OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD,
-                    'Loyalty Program Id cannot be found.'
+                    self::OFFERWHERE_PRIVATE_API_KEY_FIELD,
+                    self::INVALID_PRIVATE_KEY_ERROR_MESSAGE
                 );
             }
         }
@@ -239,9 +238,14 @@ class Offerwhere_Settings
         <?php
     }
 
-    public static function offerwhere_api_key_field_callback()
+    public static function offerwhere_private_api_key_field_callback()
     {
-        self::offerwhere_field_text_area_callback(self::OFFERWHERE_API_KEY_FIELD, self::OFFERWHERE_API_KEY);
+        self::offerwhere_field_text_area_callback(self::OFFERWHERE_PRIVATE_API_KEY_FIELD, self::OFFERWHERE_PRIVATE_API_KEY);
+    }
+
+    public static function offerwhere_public_api_key_field_callback()
+    {
+        self::offerwhere_field_text_area_callback(self::OFFERWHERE_PUBLIC_API_KEY_FIELD, self::OFFERWHERE_PUBLIC_API_KEY);
     }
 
     private static function offerwhere_field_text_area_callback($field_id, $settings_key)
@@ -253,35 +257,11 @@ class Offerwhere_Settings
         <?php
     }
 
-    public static function offerwhere_loyalty_program_id_field_callback()
-    {
-        self::offerwhere_field_input_text_callback(
-            self::OFFERWHERE_LOYALTY_PROGRAM_ID_FIELD,
-            self::OFFERWHERE_LOYALTY_PROGRAM_ID
-        );
-    }
-
-    private static function offerwhere_field_input_text_callback($field_id, $settings_key)
-    {
-        $value = self::offerwhere_get_settings_val($settings_key);
-        ?>
-        <input type="text" id="<?php echo esc_attr($field_id); ?>"
-               name="<?php esc_html(printf('%s[%s]', self::OFFERWHERE_SETTINGS, $settings_key)); ?>"
-               class="regular-text"
-               value="<?php esc_html(printf('%s', $value !== null ? $value : '')); ?>"/>
-        <?php
-    }
-
-    public static function offerwhere_activity_id_field_callback()
-    {
-        self::offerwhere_field_input_text_callback(self::OFFERWHERE_ACTIVITY_ID_FIELD, self::OFFERWHERE_ACTIVITY_ID);
-    }
-
     public static function offerwhere_is_setting_missing(): bool
     {
         $calculation_base_point = self::offerwhere_get_points_per_minimum_spend() !== null ?
             self::offerwhere_get_points_per_minimum_spend() : self::offerwhere_get_points_per_transaction();
-        return !Offerwhere_Validator::offerwhere_is_valid_jwt(self::offerwhere_get_api_key()) ||
+        return !Offerwhere_Validator::offerwhere_is_valid_jwt(self::offerwhere_get_private_api_key()) ||
             !Offerwhere_Validator::offerwhere_is_valid_uuid(self::offerwhere_get_organisation_id()) ||
             !Offerwhere_Validator::offerwhere_is_valid_uuid(self::offerwhere_get_loyalty_program_id()) ||
             !Offerwhere_Validator::offerwhere_is_valid_uuid(self::offerwhere_get_activity_id()) ||
@@ -292,9 +272,14 @@ class Offerwhere_Settings
             $calculation_base_point === null;
     }
 
-    public static function offerwhere_get_api_key()
+    public static function offerwhere_get_private_api_key()
     {
-        return self::offerwhere_get_settings_val(self::OFFERWHERE_API_KEY);
+        return self::offerwhere_get_settings_val(self::OFFERWHERE_PRIVATE_API_KEY);
+    }
+
+    public static function offerwhere_get_public_api_key()
+    {
+        return self::offerwhere_get_settings_val(self::OFFERWHERE_PUBLIC_API_KEY);
     }
 
     public static function offerwhere_get_organisation_id()
