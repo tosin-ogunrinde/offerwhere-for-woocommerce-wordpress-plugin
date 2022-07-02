@@ -21,9 +21,4 @@ class Offerwhere_Validator
     {
         return $val !== null && preg_match('/^([\w\d]{8})$/', $val);
     }
-
-    public static function offerwhere_is_valid_activation_code($val): bool
-    {
-        return $val !== null && preg_match('/^([\d]{6})$/', $val);
-    }
 }

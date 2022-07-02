@@ -1,4 +1,7 @@
 == Changelog ==
+= 2.0.0 =
+* New and refreshed design.
+
 = 1.8.0 =
 * Remove redundant payload.
 

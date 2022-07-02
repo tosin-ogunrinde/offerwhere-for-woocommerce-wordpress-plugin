@@ -7,8 +7,5 @@ if (!defined('ABSPATH')) {
 class Offerwhere_HTTP_Status
 {
     const OK = 200;
-    const NO_CONTENT = 204;
-    const NOT_FOUND = 404;
-    const CONFLICT = 409;
-    const PRECONDITION_FAILED = 412;
+    const PAYMENT_REQUIRED = 402;
 }
