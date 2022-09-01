@@ -3,7 +3,7 @@
  * Plugin Name:             Offerwhere for WooCommerce
  * Plugin URI:              https://www.offerwhere.com/products/offerwhere-for-woocommerce
  * Description:             Reward customers for purchases. Launch an effective loyalty program on your website in minutes. Plus, run the same loyalty program in-store and wherever you sell.
- * Version:                 2.0.0
+ * Version:                 2.2.0
  * Requires at least:       3.1
  * Tested up to:            6.0
  * Requires PHP:            7.0
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 }
 
 const OFFERWHERE_WORDPRESS_MINIMUM_VERSION = '3.1';
-const OFFERWHERE_VERSION = '2.0.0';
+const OFFERWHERE_VERSION = '2.2.0';
 const OFFERWHERE_WOOCOMMERCE_MINIMUM_VERSION = '3.5';
 
 define('OFFERWHERE_PLUGIN_DIR', plugin_dir_path(__FILE__));

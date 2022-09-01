@@ -26,8 +26,8 @@ You’ll need to:
 
 ## Changelog
 
-### 2.0.0
+### 2.2.0
 
-* New and refreshed design.
+* Fix intermittent plugin display.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

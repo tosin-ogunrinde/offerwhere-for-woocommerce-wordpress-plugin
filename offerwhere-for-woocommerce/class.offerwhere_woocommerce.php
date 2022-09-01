@@ -35,7 +35,9 @@ class Offerwhere_WooCommerce
             return;
         }
         ?>
-        <script id="offerwhere-points-bot" src="https://d27st42bbpp5a4.cloudfront.net/v1/offerwhere-points-bot.js?key=<?php echo esc_attr(Offerwhere_Settings::offerwhere_get_public_key())?>" defer crossOrigin="anonymous"></script>
+        <script id="offerwhere-points-bot"
+                src="https://d27st42bbpp5a4.cloudfront.net/v1/offerwhere-points-bot.js?key=<?php echo esc_attr(Offerwhere_Settings::offerwhere_get_public_key()) ?>"
+                defer crossOrigin="anonymous"></script>
         <?php
     }
 
