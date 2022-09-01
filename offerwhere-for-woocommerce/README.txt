@@ -4,7 +4,7 @@ Author URI: https://www.offerwhere.com
 Tags: Reward program, Loyalty program, Points program, Points and Rewards, Rewards, woocommerce
 Requires at least: 3.1
 Tested up to: 6.0
-Stable tag: 2.0.0
+Stable tag: 2.2.0
 Requires PHP: 7.0
 WC requires at least: 3.5
 WC tested up to: 6.6
@@ -43,7 +43,7 @@ You’ll need to:
 
 
 == Changelog ==
-= 2.0.0 =
-* New and refreshed design.
+= 2.2.0 =
+* Fix intermittent plugin display.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)

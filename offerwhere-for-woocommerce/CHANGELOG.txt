@@ -1,4 +1,13 @@
 == Changelog ==
+= 2.2.0 =
+* Fix intermittent plugin display.
+
+= 2.1.0 =
+* Fix intermittent plugin display.
+
+= 2.0.1 =
+* Fix intermittent plugin display.
+
 = 2.0.0 =
 * New and refreshed design.
 
