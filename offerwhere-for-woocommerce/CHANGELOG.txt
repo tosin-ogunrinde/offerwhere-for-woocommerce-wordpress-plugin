@@ -1,4 +1,7 @@
 == Changelog ==
+= 2.3.0 =
+* Test support for WooCommerce 7.4 and WordPress 6.1.
+
 = 2.2.0 =
 * Fix intermittent plugin display.
 
