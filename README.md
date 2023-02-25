@@ -26,8 +26,8 @@ You’ll need to:
 
 ## Changelog
 
-### 2.2.0
+### 2.3.0
 
-* Fix intermittent plugin display.
+* Test support for WooCommerce 7.4 and WordPress 6.1.
 
 [Historical Changelog](https://raw.githubusercontent.com/tosin-ogunrinde/offerwhere-for-woocommerce-wordpress-plugin/master/offerwhere-for-woocommerce/CHANGELOG.txt)
